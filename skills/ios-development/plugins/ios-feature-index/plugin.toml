@@ -1,0 +1,12 @@
+[plugin]
+name        = "ios-feature-index"
+version     = "0.1.0"
+description = "24h-cached index of latest iOS features + community updates with offline RAG."
+runtime     = "python"
+entrypoint  = "agent.py"
+
+[[tools]]
+name              = "research_ios_feature"
+description       = "Search the indexed corpus of latest iOS features and community updates. Refreshes any source older than 24h before answering."
+input_schema_file = "tool_schema.json"
+handler           = "research_ios_feature"

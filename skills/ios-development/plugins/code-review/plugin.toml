@@ -1,0 +1,18 @@
+[plugin]
+name        = "code-review"
+version     = "0.1.0"
+description = "Adversarial + constructive code-review sub-agents."
+runtime     = "python"
+entrypoint  = "agent.py"
+
+[[tools]]
+name              = "adversarial_review"
+description       = "Hostile-reviewer pass over a code blob. Returns ranked findings."
+input_schema_file = "tool_schema.json"
+handler           = "adversarial_review"
+
+[[tools]]
+name              = "constructive_review"
+description       = "Supportive senior-engineer pass over a code blob. Returns findings + keep-doing notes."
+input_schema_file = "tool_schema.json"
+handler           = "constructive_review"

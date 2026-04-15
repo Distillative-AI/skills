@@ -50,6 +50,15 @@
       "skills": [
         "./skills/claude-api"
       ]
+    },
+    {
+      "name": "ios-development",
+      "description": "Vibe-code iOS apps via Claude Code Cloud and deploy locally to iOS from iOS — Sonnet-powered orchestrator, Virtual User Agent, spec-driven BDD, 24h-cached SDK + arXiv + iOS-feature indexes, adversarial/constructive code-review plugins.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/ios-development"
+      ]
     }
   ]
 }

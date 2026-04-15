@@ -1,0 +1,8 @@
+# Runtime + dev dependencies for the ios-development skill.
+# Install with: pip install -r requirements.txt
+anthropic>=0.40.0
+behave>=1.2.6
+pytest>=8.0
+tomli>=2.0; python_version < "3.11"
+# Optional — only required for the WASM plugin runtime (dev mode is pure Python):
+# wasmtime>=20.0

@@ -1,0 +1,19 @@
+# AgentSkills-format plugin manifest. Loaded by app/plugins/_loader.
+#
+# This plugin currently runs in dev (Python) mode. It is structured so a
+# future Rust/AssemblyScript port to WASM can drop in by switching
+# `runtime = "wasm"` and pointing `entrypoint` at `module.wasm` — the
+# tool surface stays identical.
+
+[plugin]
+name        = "arxiv-research"
+version     = "0.1.0"
+description = "Deep arXiv research agent with a 24h cached search index."
+runtime     = "python"
+entrypoint  = "agent.py"
+
+[[tools]]
+name              = "research_arxiv"
+description       = "Search arXiv for papers relevant to an iOS feature. 24h-cached per query."
+input_schema_file = "tool_schema.json"
+handler           = "research_arxiv"

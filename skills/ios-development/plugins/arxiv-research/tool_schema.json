@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "query": {
+      "type": "string",
+      "description": "Free-text arXiv search query, e.g. 'on-device speaker diarization'."
+    },
+    "max_results": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 10
+    },
+    "force_refresh": {
+      "type": "boolean",
+      "default": false,
+      "description": "Bypass the 24h cache and re-fetch from arXiv."
+    },
+    "rag_question": {
+      "type": "string",
+      "description": "Optional. If provided, run a local RAG retrieval over the cached corpus and include the top passages in the response. Works offline once the cache is warm."
+    }
+  },
+  "required": ["query"]
+}

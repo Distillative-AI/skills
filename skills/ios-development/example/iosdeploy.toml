@@ -1,0 +1,11 @@
+# Defaults for `python ../app/deploy.py` when run from this directory.
+# Override any field on the command line.
+
+[ios-localdeploy]
+project       = "HelloIPhone.xcodeproj"
+scheme        = "HelloIPhone"
+configuration = "Debug"
+target        = "simulator"
+device        = "iPhone 15"
+bundle_id     = "com.distillative.helloiphone"
+log_seconds   = 10

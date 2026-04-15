@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "properties": {
+    "code": {
+      "type": "string",
+      "description": "Source code to review (Swift / Objective-C / SwiftPM manifest / etc.)."
+    },
+    "context": {
+      "type": "string",
+      "description": "Optional context: what feature, what device targets, what perf budget."
+    },
+    "max_findings": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30,
+      "default": 10
+    }
+  },
+  "required": ["code"]
+}

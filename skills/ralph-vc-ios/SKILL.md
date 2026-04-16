@@ -49,6 +49,26 @@ Trigger this skill when the user wants to:
 never block the main thread, and remain fully usable under VoiceOver,
 Dynamic Type, and Reduced Motion.
 
+## Run it on your iPhone — one command
+
+> **See `RUNNING_ON_IPHONE.md` for the full walkthrough.**
+
+On your Mac (Xcode 15+ installed, iPhone tethered):
+
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+./setup.sh --device --team-id ABCDE12345
+```
+
+`setup.sh` checks prerequisites, runs `xcodegen generate` against
+`ios-app/project.yml` to materialise `RalphVC.xcodeproj`, starts the
+local server in the background, and shells out to the sibling
+`ios-development` skill's `app/deploy.py` to build + sign + install +
+launch the app on your phone. To iterate without a cable:
+`./setup.sh --simulator`. To open the in-app gear icon → paste the
+endpoint + bearer token printed by `setup.sh`, save to Keychain, and
+tap the mic.
+
 ## Repo layout
 
 ```

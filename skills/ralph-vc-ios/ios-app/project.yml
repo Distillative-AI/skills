@@ -1,0 +1,45 @@
+# xcodegen project spec for the Ralph VC iPhone app.
+# Generate the .xcodeproj on your Mac with: `xcodegen generate`
+# Install xcodegen first: `brew install xcodegen`
+
+name: RalphVC
+
+options:
+  bundleIdPrefix: com.distillative
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # Override DEVELOPMENT_TEAM at build time:
+    #   xcodebuild ... DEVELOPMENT_TEAM=ABCDE12345
+    # Or set it once via env:
+    #   export DEVELOPMENT_TEAM=ABCDE12345
+    DEVELOPMENT_TEAM: "$(DEVELOPMENT_TEAM)"
+    CODE_SIGN_STYLE: Automatic
+    PRODUCT_BUNDLE_IDENTIFIER: com.distillative.ralphvc
+    SUPPORTS_MACCATALYST: NO
+    TARGETED_DEVICE_FAMILY: "1,2"   # iPhone + iPad
+
+targets:
+  RalphVC:
+    type: application
+    platform: iOS
+    sources:
+      - path: RalphVC
+        excludes:
+          - "Info.plist"
+    info:
+      path: RalphVC/Info.plist
+    settings:
+      base:
+        INFOPLIST_FILE: RalphVC/Info.plist
+        # Allow plain HTTP to localhost / your Mac during development.
+        # Strip this for App Store releases.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoadsInWebContent: false
+          NSAllowsLocalNetworking: true

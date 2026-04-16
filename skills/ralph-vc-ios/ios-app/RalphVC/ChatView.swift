@@ -10,16 +10,29 @@ import SwiftUI
 struct ChatView: View {
     @EnvironmentObject private var session: AppSession
     @State private var draft: String = ""
+    @State private var showSettings: Bool = false
     @FocusState private var draftFocused: Bool
 
     var body: some View {
-        VStack(spacing: 0) {
-            transcript
-            Divider()
-            composer
+        NavigationStack {
+            VStack(spacing: 0) {
+                transcript
+                Divider()
+                composer
+            }
+            .navigationTitle("Ralph VC")
+            .accessibilityIdentifier("ralph-chat-root")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { showSettings = true } label: {
+                        Image(systemName: "gear")
+                    }
+                    .accessibilityLabel("Open settings")
+                    .accessibilityIdentifier("open-settings-button")
+                }
+            }
+            .sheet(isPresented: $showSettings) { SettingsView() }
         }
-        .navigationTitle("Ralph VC")
-        .accessibilityIdentifier("ralph-chat-root")
     }
 
     private var transcript: some View {

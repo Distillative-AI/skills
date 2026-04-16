@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDisplayName</key><string>Ralph VC</string>
+    <key>CFBundleIdentifier</key><string>com.distillative.ralphvc</string>
+    <key>CFBundleName</key><string>RalphVC</string>
+    <key>CFBundleShortVersionString</key><string>0.1.0</string>
+    <key>CFBundleVersion</key><string>1</string>
+    <key>UILaunchScreen</key><dict/>
+    <key>UISupportedInterfaceOrientations</key>
+    <array>
+        <string>UIInterfaceOrientationPortrait</string>
+        <string>UIInterfaceOrientationLandscapeLeft</string>
+        <string>UIInterfaceOrientationLandscapeRight</string>
+    </array>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Ralph VC uses the microphone to transcribe your prompts to Claude Code Cloud via the Speech framework.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Ralph VC uses Speech Recognition to convert your dictation into prompts for the macOS-side orchestrator.</string>
+    <key>UIAccessibilityEnabled</key><true/>
+    <key>RALPHVC_ENDPOINT</key><string>http://127.0.0.1:7878</string>
+</dict>
+</plist>

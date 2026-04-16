@@ -1,0 +1,19 @@
+# Default config for the ralph-vc-ios server shim.
+# Override at the command line or via the matching env var.
+
+[server]
+host = "127.0.0.1"
+port = 7878
+
+[auth]
+# Override at runtime via RALPHVC_BEARER. Never commit a real token.
+bearer_env = "RALPHVC_BEARER"
+
+[upstream]
+# The shim delegates to the sibling ios-development skill's orchestrator,
+# which talks to Claude Sonnet 4.6 via the Anthropic SDK (Claude Code API).
+# When the optional `claude-agent-sdk` package is installed we can also
+# promote sessions to a managed agent.
+model              = "claude-sonnet-4-6"
+adaptive_thinking  = true
+prompt_caching     = true

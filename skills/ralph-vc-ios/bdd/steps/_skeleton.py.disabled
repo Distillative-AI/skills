@@ -1,0 +1,21 @@
+# NOTE: this file is the *initial* skeleton step layer used during the
+# spec-driven RED phase. It is named `.disabled` so behave does not pick
+# it up after the implementation lands. It is kept in-tree as evidence of
+# the spec-first workflow — the live implementation in
+# `accessibility_steps.py` was derived from it.
+#
+# To replay the RED phase, rename this file to `_skeleton.py` and rename
+# the live `accessibility_steps.py` out of the way.
+#
+# Authored by Chase Eddies <source@distillative.ai>.
+
+from behave import given, when, then
+
+
+def _todo(*_args, **_kwargs):
+    raise NotImplementedError("step not implemented yet — write the impl, then re-run.")
+
+
+# Most steps were intentionally left unimplemented during the RED phase
+# so behave reported "0 passed, 8 failed". The implementation that
+# turned the suite green lives in accessibility_steps.py.

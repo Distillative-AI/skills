@@ -59,6 +59,15 @@
       "skills": [
         "./skills/ios-development"
       ]
+    },
+    {
+      "name": "ralph-vc-ios",
+      "description": "iPhone-side companion to ios-development: SwiftUI 'Ralph VC' app for hands-free vibe-coding, native iOS STT/TTS with the Ralph voice and full VoiceOver wiring, plus a localhost HTTP shim that brokers requests to the macOS Sonnet orchestrator (Anthropic SDK + optional Claude Agent SDK).",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/ralph-vc-ios"
+      ]
     }
   ]
 }

@@ -1,0 +1,8 @@
+# Runtime + dev dependencies for the ralph-vc-ios skill.
+# Install with: pip install -r requirements.txt
+behave>=1.2.6
+pytest>=8.0
+# Provided by the sibling ios-development skill. Optional here.
+anthropic>=0.40.0
+# Optional: enables managed-agent promotion in server.py.
+# claude-agent-sdk

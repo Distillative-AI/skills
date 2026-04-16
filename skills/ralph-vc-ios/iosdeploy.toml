@@ -1,0 +1,12 @@
+# Defaults for `python ../ios-development/app/deploy.py` when invoked from
+# this directory. Builds the RalphVC SwiftUI app and installs it on the
+# first booted simulator.
+
+[ios-localdeploy]
+project       = "ios-app/RalphVC.xcodeproj"
+scheme        = "RalphVC"
+configuration = "Debug"
+target        = "simulator"
+device        = "iPhone 15"
+bundle_id     = "com.distillative.ralphvc"
+log_seconds   = 10

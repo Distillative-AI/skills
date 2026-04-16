@@ -49,9 +49,18 @@ Trigger this skill when the user wants to:
 never block the main thread, and remain fully usable under VoiceOver,
 Dynamic Type, and Reduced Motion.
 
-## Run it on your iPhone — one command
+## Run it on your iPhone
 
-> **See `RUNNING_ON_IPHONE.md` for the full walkthrough.**
+There are three install paths — pick what fits what you have today.
+**See `DOWNLOAD.md` for the full comparison and walkthrough.**
+
+| Path | What you need | What you get |
+| --- | --- | --- |
+| **PWA** (`web/`) | Just Safari. Add to Home Screen → done. | Lower-fidelity speech (Web Speech API). Token in localStorage. |
+| **Dev tether** (`setup.sh`) | Mac with Xcode + free Apple ID. | Full native app, requires the iPhone to be tethered. |
+| **Ad-Hoc OTA** (`distribution/`) | Apple Developer Program ($99/yr) + your iPhone's UDID + free HTTPS host. | Tap-to-install in Safari from any URL. Real native install. |
+
+### Quickest: dev tether
 
 On your Mac (Xcode 15+ installed, iPhone tethered):
 
@@ -65,9 +74,31 @@ export ANTHROPIC_API_KEY=sk-ant-...
 local server in the background, and shells out to the sibling
 `ios-development` skill's `app/deploy.py` to build + sign + install +
 launch the app on your phone. To iterate without a cable:
-`./setup.sh --simulator`. To open the in-app gear icon → paste the
-endpoint + bearer token printed by `setup.sh`, save to Keychain, and
-tap the mic.
+`./setup.sh --simulator`. The in-app gear icon stores the endpoint +
+bearer token in the iPhone Keychain. See `RUNNING_ON_IPHONE.md`.
+
+### Real "click a download" install: Ad-Hoc OTA
+
+```bash
+./distribution/make-ipa.sh --team-id ABCDE12345
+./distribution/host.sh --provider cloudflare    # or netlify / gh-pages
+```
+
+`make-ipa.sh` archives + exports an Ad-Hoc-signed `RalphVC.ipa` and
+generates the `manifest.plist` + `install.html` template. `host.sh`
+publishes the trio to a free HTTPS host (Cloudflare Pages / Netlify /
+GitHub Pages), rewrites the `itms-services://` link to point at the
+live manifest, and prints the URL you tap from Safari on your iPhone.
+First-launch trust prompt under *Settings → General → VPN & Device
+Management*, then it runs natively. See `DOWNLOAD.md` for the full
+flow including UDID registration and trust-the-developer steps.
+
+### Zero-setup: PWA
+
+Serve `web/` from any static host (or `python3 -m http.server` on
+your Mac), open the URL in iPhone Safari, *Share → Add to Home
+Screen*. The PWA reuses the `/v1/orchestrate` endpoint that `setup.sh`
+exposes, so you still need the Mac-side server running.
 
 ## Repo layout
 

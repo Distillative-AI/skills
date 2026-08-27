@@ -1,17 +1,18 @@
+<!--
+  Authored by Chase Eddies <source@distillative.ai>.
+  Coding assistant: Claude Code Cloud.
+-->
+
 # Getting Ralph VC onto your iPhone
 
-There are two click-to-install paths. Pick the one that matches what
+There are three click-to-install paths. Pick the one that matches what
 you have on hand right now.
 
 | Path | What you need | What you get | Set-up time |
 | --- | --- | --- | --- |
 | **A — PWA (zero setup)** | An iPhone with Safari. That's it. | Works today. Lower-fidelity speech (Web Speech API). No keychain — bearer token in localStorage. | 30 seconds |
 | **B — Ad-Hoc OTA install** | $99/yr Apple Developer Program, a Mac with Xcode, your iPhone's UDID registered, an HTTPS host (free options below). | Real native iOS app. Native `SFSpeechRecognizer` STT, native `AVSpeechSynthesizer` TTS with the Ralph voice. Tap a Safari link → iOS prompts to install. | ~30 min one-time |
-
-> A third path — **TestFlight** — gives the cleanest install experience
-> (tap an emailed link → install from Apple's TestFlight app) but adds
-> Apple's beta review (typically same-day). Same prerequisites as path B
-> plus App Store Connect setup. Ask if you want me to wire this up.
+| **C — TestFlight** | $99/yr Apple Developer Program, a Mac with Xcode, an App Store Connect account + API key or app-specific password. No UDID needed. | Real native iOS app, the cleanest tap-to-install experience Apple offers. Apple hosts the download; testers install from the TestFlight app. Adds a light Apple beta review. | ~15 min one-time (plus review wait) |
 
 ---
 
@@ -126,6 +127,90 @@ your existing install link keeps working.
 
 ---
 
+## Path C — TestFlight, the cleanest tap-to-install
+
+This is Apple's own beta-distribution channel. Instead of you hosting
+an `.ipa` + manifest + install page, you upload the build to App Store
+Connect and Apple hosts everything — the download, the install prompt,
+and the version updates — through the TestFlight app.
+
+### What you need
+
+1. **Apple Developer Program membership** ($99/yr), same as path B.
+   <https://developer.apple.com/programs/>
+2. **An App Store Connect account** with an app record already created
+   for the bundle id (App Store Connect → *My Apps* → **+** → *New App*).
+   This is a one-time five-minute form; no code involved.
+3. **Credentials to authenticate the upload**, either of:
+   - An **App Store Connect API key** (App Store Connect → *Users and
+     Access* → *Keys* → generate one). Pass its key id + issuer id to
+     `testflight.sh --api-key-id … --api-issuer-id …`. This is the
+     modern path (`xcrun notarytool`) and doesn't need a password.
+   - Or an **Apple ID + app-specific password**
+     (<https://appleid.apple.com> → *Sign-In and Security* →
+     *App-Specific Passwords*) — **not** your normal Apple ID password.
+     Export `APPLE_ID` and `APP_SPECIFIC_PASSWORD` and the script falls
+     back to `xcrun altool`.
+
+Notice what you *don't* need: no UDID registration, no HTTPS hosting
+account. Apple's TestFlight infrastructure replaces both.
+
+### One-command flow
+
+On your Mac:
+
+```bash
+export TEAM_ID=ABCDE12345
+export APPLE_ID=you@example.com
+export APP_SPECIFIC_PASSWORD=abcd-efgh-ijkl-mnop   # app-specific, not your Apple ID password
+
+./distribution/testflight.sh --team-id "$TEAM_ID" --apple-id "$APPLE_ID"
+```
+
+`testflight.sh` checks prerequisites, generates the `.xcodeproj` via
+`xcodegen` if it's missing, archives with `xcodebuild archive` using
+App Store distribution signing, exports an `app-store`-method `.ipa`
+via `ExportOptions-appstore.plist`, and uploads it to App Store Connect
+with `xcrun altool --upload-app` (or `xcrun notarytool`'s underlying
+transporter if you pass `--api-key-id`/`--api-issuer-id` instead).
+
+### What happens after upload
+
+1. Apple processes the build (usually a few minutes) — watch it appear
+   under **App Store Connect → your app → TestFlight tab**.
+2. Once it shows **Ready to Test**, either:
+   - **Add individual testers by email** under *Internal Testing* (up
+     to 100 people, no review needed) or *External Testing* (up to
+     10,000, needs beta review), **or**
+   - **Turn on the Public Link** for a testing group — a single
+     shareable URL, no email collection required, still capped at
+     10,000 testers and still no UDID registration.
+3. **Apple runs a light beta review** for external/public-link testing
+   — typically same-day, sometimes just a few hours. Internal testing
+   (your own App Store Connect team, ≤100 people) skips review
+   entirely.
+
+### The install experience
+
+- **Emailed invite:** the tester gets an email, taps **View in
+  TestFlight**, which opens (or installs) the TestFlight app and
+  installs Ralph VC from there.
+- **Public link:** the tester opens the link in Safari, gets redirected
+  into TestFlight, and installs from there.
+
+Either way, this is the cleanest "tap to download" experience Apple
+offers on iOS — no developer-trust prompt, no manifest plist, no QR
+code, and TestFlight even nudges testers when you ship a new build.
+
+### Re-issuing a build
+
+Bump `--version`/`--build` (or just re-run — `testflight.sh` defaults
+the build number to a fresh timestamp) and run `testflight.sh` again.
+Existing testers get a push notification in the TestFlight app that a
+new build is available.
+
+---
+
 ## Why I can't just give you a download link directly
 
 Apple's iOS will **only** install an `.ipa` from Safari if all of the
@@ -140,7 +225,9 @@ following are true:
 
 I can ship every line of script and HTML in this repo, but I cannot
 sign the `.ipa` for you (no Apple Developer cert here), I cannot
-register your UDID in your team (no portal access), and I cannot host
-the result over HTTPS (no infra to attach to your account). The two
-paths above are the closest I can practically get you to "tap and it's
-installed" without taking over your developer account.
+register your UDID in your team (no portal access), I cannot host the
+result over HTTPS (no infra to attach to your account), and I cannot
+create your App Store Connect app record or API key (no portal access
+there either). The three paths above are the closest I can practically
+get you to "tap and it's installed" without taking over your developer
+account.

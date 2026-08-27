@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ExportOptions-appstore.plist — export options for App Store / TestFlight
+  distribution of RalphVC.ipa.
+
+  This is the static reference copy. distribution/testflight.sh generates
+  a working copy at build time with teamID substituted in (same pattern
+  make-ipa.sh uses for its Ad-Hoc ExportOptions.plist), so you normally
+  don't need to hand-edit this file — it's checked in so the `method:
+  app-store` setting is reviewable and testable without running Xcode.
+
+  Authored by Chase Eddies <source@distillative.ai>.
+  Coding assistant: Claude Code Cloud.
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>method</key>             <string>app-store</string>
+  <key>signingStyle</key>       <string>automatic</string>
+  <key>teamID</key>             <string>REPLACE_WITH_TEAM_ID</string>
+  <key>compileBitcode</key>     <false/>
+  <key>uploadSymbols</key>      <true/>
+  <key>destination</key>        <string>export</string>
+</dict>
+</plist>

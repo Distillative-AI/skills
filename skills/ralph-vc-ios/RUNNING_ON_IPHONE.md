@@ -94,6 +94,52 @@ Re-running the script regenerates the project (xcodegen is idempotent),
 rebuilds, and re-installs. If the server is already running it'll
 warn-but-continue — pass `--no-server` to skip the server start.
 
+## Distributing to other people's iPhones: TestFlight
+
+The dev-tether flow above is for *your own* iPhone, cabled to *your*
+Mac. To get Ralph VC onto teammates' or testers' iPhones without cables,
+UDID registration, or you hosting anything, use the TestFlight path:
+
+```bash
+export TEAM_ID=ABCDE12345
+export APPLE_ID=you@example.com
+export APP_SPECIFIC_PASSWORD=abcd-efgh-ijkl-mnop   # not your Apple ID password
+
+./distribution/testflight.sh --team-id "$TEAM_ID" --apple-id "$APPLE_ID"
+```
+
+What you need beyond the dev-tether prerequisites:
+
+- An **App Store Connect account** with an app record created for the
+  bundle id (App Store Connect → *My Apps* → **+** → *New App*).
+- Either an **App Store Connect API key** (`--api-key-id` /
+  `--api-issuer-id`, generated under *Users and Access* → *Keys*) or an
+  **app-specific password** for your Apple ID (generated at
+  <https://appleid.apple.com> → *Sign-In and Security* →
+  *App-Specific Passwords* — never your real account password).
+
+`testflight.sh` generates the `.xcodeproj` if it's missing, archives
+with App Store distribution signing, exports an `app-store`-method
+`.ipa` (`distribution/ExportOptions-appstore.plist`), and uploads it
+via `xcrun altool --upload-app` (or `xcrun notarytool` when you pass an
+API key).
+
+Once the build finishes processing in App Store Connect (usually a few
+minutes) and clears Apple's light beta review (typically same-day,
+sometimes just hours):
+
+1. Go to **App Store Connect → your app → TestFlight tab**.
+2. Either **add individual testers by email**, or turn on the
+   **Public Link** for a testing group — a single shareable URL, up to
+   10,000 testers, no UDID needed.
+3. Testers tap the emailed **View in TestFlight** link (or the public
+   link), which opens the TestFlight app, and install Ralph VC from
+   there. This is the cleanest tap-to-install experience Apple offers —
+   no developer-trust prompt like the Ad-Hoc OTA path needs.
+
+Re-running `testflight.sh` after bumping `--version`/`--build` ships an
+update; existing testers get a notification in the TestFlight app.
+
 ## Troubleshooting
 
 | Symptom | Likely cause | Fix |

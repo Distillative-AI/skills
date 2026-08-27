@@ -51,14 +51,15 @@ Dynamic Type, and Reduced Motion.
 
 ## Run it on your iPhone
 
-There are three install paths — pick what fits what you have today.
+There are four install paths — pick what fits what you have today.
 **See `DOWNLOAD.md` for the full comparison and walkthrough.**
 
 | Path | What you need | What you get |
 | --- | --- | --- |
 | **PWA** (`web/`) | Just Safari. Add to Home Screen → done. | Lower-fidelity speech (Web Speech API). Token in localStorage. |
 | **Dev tether** (`setup.sh`) | Mac with Xcode + free Apple ID. | Full native app, requires the iPhone to be tethered. |
-| **Ad-Hoc OTA** (`distribution/`) | Apple Developer Program ($99/yr) + your iPhone's UDID + free HTTPS host. | Tap-to-install in Safari from any URL. Real native install. |
+| **Ad-Hoc OTA** (`distribution/make-ipa.sh` + `host.sh`) | Apple Developer Program ($99/yr) + your iPhone's UDID + free HTTPS host. | Tap-to-install in Safari from any URL. Real native install. |
+| **TestFlight** (`distribution/testflight.sh`) | Apple Developer Program ($99/yr) + App Store Connect account + API key or app-specific password. No UDID needed. | Apple hosts the download. Tester taps an email or public link → installs from the TestFlight app. Cleanest tap-to-install Apple offers, plus a light beta review. |
 
 ### Quickest: dev tether
 
@@ -92,6 +93,21 @@ live manifest, and prints the URL you tap from Safari on your iPhone.
 First-launch trust prompt under *Settings → General → VPN & Device
 Management*, then it runs natively. See `DOWNLOAD.md` for the full
 flow including UDID registration and trust-the-developer steps.
+
+### Cleanest tap-to-install: TestFlight
+
+```bash
+./distribution/testflight.sh --team-id ABCDE12345 --apple-id you@example.com
+```
+
+`testflight.sh` archives + exports an App Store-signed `RalphVC.ipa`
+(export method `app-store`, via `ExportOptions-appstore.plist`) and
+uploads it to App Store Connect with `xcrun altool` (or `xcrun
+notarytool` if you pass an API key). No UDID, no HTTPS host to manage —
+Apple hosts the download. Add testers by email or turn on the Public
+Link under App Store Connect → TestFlight, and testers install straight
+from the TestFlight app after a light Apple beta review (typically
+same-day). See `DOWNLOAD.md` → Path C for the full flow.
 
 ### Zero-setup: PWA
 
